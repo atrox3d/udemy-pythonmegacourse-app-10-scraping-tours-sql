@@ -27,6 +27,20 @@ def extract(source):
     return tours
 
 
+def send_mail():
+    print('email was sent')
+
+
+def store(extracted):
+    with open('data.txt', 'a') as file:
+        file.write(f'{extracted}\n')
+
+
+def read():
+    with open('data.txt') as file:
+        return file.read()
+
+
 if __name__ == '__main__':
     scraped = scrape(URL, get_headers())
 
@@ -38,4 +52,13 @@ if __name__ == '__main__':
 
     extracted = extract(scraped)
     print(f'{extracted=}')
+
+    if extracted != 'No upcoming tours':
+        try:
+            content = read()
+        except FileNotFoundError:
+            content = []
+        if extracted not in content:
+            store(extracted)
+            send_mail()
 
