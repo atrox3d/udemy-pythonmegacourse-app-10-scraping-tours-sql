@@ -19,9 +19,23 @@ def scrape(url, headers=None):
     return source
 
 
+def extract(source):
+    extractor = selectorlib.Extractor.from_yaml_file('extract.yaml')
+    value = extractor.extract(source)
+    print(f'{value=}')
+    tours = value['tours']
+    return tours
+
+
 if __name__ == '__main__':
-    source = scrape(URL, get_headers())
+    scraped = scrape(URL, get_headers())
+
+    # check if present in html
     search = '<h1 align="right " id="displaytimer">'
-    for line in source.split('\n'):
+    for line in scraped.split('\n'):
         if search in line:
             print(line)
+
+    extracted = extract(scraped)
+    print(f'{extracted=}')
+
