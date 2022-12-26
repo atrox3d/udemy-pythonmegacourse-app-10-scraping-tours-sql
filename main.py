@@ -2,6 +2,8 @@ import requests
 import selectorlib
 import json
 
+from mailer import send_mail
+
 URL = 'https://programmer100.pythonanywhere.com/tours/'
 
 
@@ -27,10 +29,6 @@ def extract(source):
     return tours
 
 
-def send_mail():
-    print('email was sent')
-
-
 def store(extracted):
     with open('data.txt', 'a') as file:
         file.write(f'{extracted}\n')
@@ -41,24 +39,24 @@ def read():
         return file.read()
 
 
-if __name__ == '__main__':
-    scraped = scrape(URL, get_headers())
+scraped = scrape(URL, get_headers())
 
-    # check if present in html
-    search = '<h1 align="right " id="displaytimer">'
-    for line in scraped.split('\n'):
-        if search in line:
-            print(line)
+# check if present in html
+search = '<h1 align="right " id="displaytimer">'
+for line in scraped.split('\n'):
+    if search in line:
+        print(line)
 
-    extracted = extract(scraped)
-    print(f'{extracted=}')
+extracted = extract(scraped)
+print(f'{extracted=}')
 
-    if extracted != 'No upcoming tours':
-        try:
-            content = read()
-        except FileNotFoundError:
-            content = []
-        if extracted not in content:
-            store(extracted)
-            send_mail()
-
+if extracted != 'No upcoming tours':
+    try:
+        content = read()
+    except FileNotFoundError:
+        content = []
+    if extracted not in content:
+        store(extracted)
+        send_mail(subject='Hey, new event was found', body=f'{extracted}')
+    else:
+        print('event already sent')
