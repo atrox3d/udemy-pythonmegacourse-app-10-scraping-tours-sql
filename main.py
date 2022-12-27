@@ -9,7 +9,7 @@ URL = 'https://programmer100.pythonanywhere.com/tours/'
 
 
 def get_headers(filename='headers.txt'):
-    with open('headers.txt') as file:
+    with open(filename) as file:
         _, dictionary = file.read().split('=')
         headers = json.loads(dictionary)
         return headers
