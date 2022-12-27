@@ -3,26 +3,22 @@ import time
 from mailer import send_mail
 import scraper
 import textdb
+import sqldb
 
 URL = 'https://programmer100.pythonanywhere.com/tours/'
 
+db = textdb
+db = sqldb
 SECONDS = 0
 while True:
     scraped = scraper.scrape(URL)
-
-    # check if present in html
-    search = '<h1 align="right " id="displaytimer">'
-    for line in scraped.split('\n'):
-        if search in line:
-            print(line)
-
     extracted = scraper.extract(scraped)
     print(f'{extracted=}')
-
     if extracted != 'No upcoming tours':
-        content = textdb.read()
-        if extracted not in content:
-            textdb.store(extracted)
+        fields = [item.strip() for item in extracted.split(',')]
+        content = db.read()
+        if tuple(fields) not in content:
+            db.store(fields)
             send_mail(subject='Hey, new event was found', body=f'{extracted}')
         else:
             print('event already sent')
