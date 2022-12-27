@@ -10,3 +10,4 @@ todos.txt
 /bonus/camera-photos/
 /data.txt
 /exercise/temps.csv
+*.db
