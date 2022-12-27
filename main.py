@@ -20,10 +20,7 @@ while True:
     print(f'{extracted=}')
 
     if extracted != 'No upcoming tours':
-        try:
-            content = textdb.read()
-        except FileNotFoundError:
-            content = []
+        content = textdb.read()
         if extracted not in content:
             textdb.store(extracted)
             send_mail(subject='Hey, new event was found', body=f'{extracted}')

@@ -4,5 +4,8 @@ def store(extracted):
 
 
 def read():
-    with open('data.txt') as file:
-        return file.read()
+    try:
+        with open('data.txt') as file:
+            return file.read()
+    except FileNotFoundError:
+        return []
