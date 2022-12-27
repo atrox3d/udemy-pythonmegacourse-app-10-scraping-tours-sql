@@ -3,6 +3,7 @@ import requests
 import selectorlib
 import json
 
+import scraper
 
 URL = 'https://programmer100.pythonanywhere.com'
 
@@ -27,7 +28,7 @@ def extract(source):
             css: '#temperatureId'
     """
     extractor = selectorlib.Extractor.from_yaml_string(yaml)
-    extracted = extractor.extract(source)[key]
+    extracted = scraper.extract(source)[key]
     return extracted
 
 

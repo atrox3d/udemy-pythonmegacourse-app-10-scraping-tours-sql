@@ -1,33 +1,9 @@
 import time
-import requests
-import selectorlib
-import json
 
 from mailer import send_mail
+from scraper import get_headers, scrape, extract
 
 URL = 'https://programmer100.pythonanywhere.com/tours/'
-
-
-def get_headers(filename='headers.txt'):
-    with open(filename) as file:
-        _, dictionary = file.read().split('=')
-        headers = json.loads(dictionary)
-        return headers
-
-
-def scrape(url, headers=None):
-    """scrape the page source from the url"""
-    response = requests.get(url, headers=headers)
-    source = response.text
-    return source
-
-
-def extract(source):
-    extractor = selectorlib.Extractor.from_yaml_file('extract.yaml')
-    value = extractor.extract(source)
-    print(f'{value=}')
-    tours = value['tours']
-    return tours
 
 
 def store(extracted):
