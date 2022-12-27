@@ -11,7 +11,7 @@ def get_headers(filename='headers.txt'):
         return headers
 
 
-def scrape(url, headers=None):
+def scrape(url, headers=get_headers()):
     """scrape the page source from the url"""
     response = requests.get(url, headers=headers)
     source = response.text
