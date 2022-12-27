@@ -25,9 +25,15 @@ CREATE TABLE IF NOT EXISTS events (
     band text,
     city text,
     date text
-); 
+)
 """
 cursor.execute(sql_create_events_table).connection.commit()
+#
+# create table events from external file if it doesnt exists
+#
+with open('events.sql') as sqlfile:
+    sql_create_events_table = sqlfile.read()
+    cursor.execute(sql_create_events_table).connection.commit()
 #
 # delete all records created by this script
 #
